@@ -26,11 +26,21 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          az login --service-principal `
+            --username "krishna712@akmalh4921gmail.onmicrosoft.com"
+            --password "devopsinsideraug@1234" `
+            --tenant "2575fc6b-c79b-46a0-8d6c-12a97e555147"
 
-      - name: Terraform Format Check
+      - name: Set Azure Subscription
+        run: |
+          az account set `
+            --subscription "YOUR_SUBSCRIPTION_ID"
+
+      - name: Check Azure Login
+        run: az account show
+
+      - name: Terraform Format
         run: terraform fmt -check -recursive
 
       - name: Terraform Init
